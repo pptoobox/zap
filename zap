@@ -14,6 +14,43 @@ fi
 
 # Command dispatcher
 case "$1" in
+  list-all|la)
+    echo -e "${GREEN}[+] Updating package lists...${NC}"
+    $SUDO apt update
+    echo -e "${GREEN}[+] Listing all packages:${NC}"
+    $SUDO apt list
+    ;;
+  list-installed|li)
+    echo -e "${GREEN}[+] Listing installed packages:${NC}"
+    $SUDO apt list -i
+    ;;
+  search|s)
+    shift
+    if [[ $# -eq 0 ]]; then
+      echo -e "${GREEN}[!] No package specified to search.${NC}"
+      exit 1
+    fi
+    echo -e "${GREEN}[+] Updating package lists...${NC}"
+    $SUDO apt update
+    echo -e "${GREEN}[+] Searching for: $@${NC}"
+    $SUDO apt search "$@"
+    ;;
+  show-info|si)
+    shift
+    if [[ $# -eq 0 ]]; then
+      echo -e "${GREEN}[!] No package specified to show info.${NC}"
+      exit 1
+    fi
+    $SUDO apt show "$@"
+    ;;
+  update|u)
+    echo -e "${GREEN}[+] Updating package lists...${NC}"
+    $SUDO apt update
+    echo -e "${GREEN}[+] Upgrading packages...${NC}"
+    $SUDO apt full-upgrade
+    echo -e "${GREEN}[✓] Clearing unused packages...${NC}"
+    $SUDO apt autoremove --purge -y
+    ;;
   install|i)
     shift
     if [[ $# -eq 0 ]]; then
@@ -25,7 +62,18 @@ case "$1" in
     echo -e "${GREEN}[+] Installing: $@${NC}"
     $SUDO apt install "$@"
     ;;
-  upgrade|u)
+  reinstall|ri)
+    shift
+    if [[ $# -eq 0 ]]; then
+      echo -e "${GREEN}[!] No packages specified to re-install.${NC}"
+      exit 1
+    fi
+    echo -e "${GREEN}[+] Updating package lists...${NC}"
+    $SUDO apt update
+    echo -e "${GREEN}[+] Re-installing: $@${NC}"
+    $SUDO apt reinstall "$@"
+    ;;
+  full-upgrade|fu)
     echo -e "${GREEN}[+] Updating package lists...${NC}"
     $SUDO apt update
     echo -e "${GREEN}[+] Upgrading packages...${NC}"
@@ -55,17 +103,41 @@ case "$1" in
     echo -e "${GREEN}[✓] Clearing unused packages...${NC}"
     $SUDO apt autoremove --purge -y
     ;;
+  self-update|su)
+    echo -e "${GREEN}[-] Removing old script...${NC}"
+    $SUDO rm /usr/local/bin/zap
+    echo -e "${GREEN}[+] Downloading zap script from GitHub...${NC}"
+    $SUDO curl -s -o /usr/local/bin/zap https://raw.githubusercontent.com/pptoolbox/zap/main/zap
+    echo -e "${GREEN}[+] Making zap executable...${NC}"
+    $SUDO chmod +x /usr/local/bin/zap
+    echo -e "${GREEN}\n[✓] Update complete.${NC}"
+    ;;
+  self-destruct|sd)
+    echo -e "${GREEN}[-] Completely removing zap from your system...${NC}"
+    $SUDO rm /bin/zap
+    $SUDO rm /usr/local/bin/zap
+    echo -e "${GREEN}\n[✓] Good bye.${NC}"
+    ;;
   help|h)
     echo -e "${GREEN}Usage:${NC}"
-    echo "  zap install <pkg>   Install packages"
-    echo "  zap upgrade         Upgrade all packages"
-    echo "  zap remove <pkg>    Remove packages"
-    echo "  zap purge <pkg>     Purge packages"
-    echo "  zap help            Show this message"
+    echo "  zap <command>"
+    echo -e "${GREEN}Commands:${NC}"
+    echo "  list-all         , la          > List all packages"
+    echo "  list-installed   , li          > List installed packages"
+    echo "  search <pkg>     , s <pkg>     > Search for any package"
+    echo "  show-info <pkg>  , si <pkg>    > Show info about any packages"
+    echo "  update           , u           > Update package lists"
+    echo "  install <pkg>    , i <pkg>     > Install packages"
+    echo "  reinstall <pkg>  , ri <pkg>    > Re-install packages"
+    echo "  full-upgrade     , fu          > Upgrade all packages"
+    echo "  remove <pkg>     , rm <pkg>    > Remove packages"
+    echo "  purge <pkg>      , p <pkg>     > Purge packages"
+    echo "  self-update      , su          > Update/Reinstall zap"
+    echo "  self-destruct    , sd          > Completely remove zap"
     ;;
   *)
     echo -e "${GREEN}[!] Unknown command.${NC}"
-    echo "Try 'zap help' for usage."
+    echo "Try 'zap help or zap h' for usage."
     exit 1
     ;;
 esac
