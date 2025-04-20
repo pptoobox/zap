@@ -25,7 +25,7 @@ case "$1" in
     echo -e "${GREEN}[+] Updating package lists...${NC}"
     $SUDO apt update
     echo -e "${GREEN}[+] Upgrading packages...${NC}"
-    $SUDO apt upgrade
+    $SUDO apt full-upgrade
     echo -e "${GREEN}[✓] Clearing unused packages...${NC}"
     $SUDO apt autoremove --purge -y
     ;;
