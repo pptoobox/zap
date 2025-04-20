@@ -16,6 +16,10 @@ fi
 case "$1" in
   install|i)
     shift
+    if [[ $# -eq 0 ]]; then
+      echo -e "${GREEN}[!] No packages specified to install.${NC}"
+      exit 1
+    fi
     echo -e "${GREEN}[+] Updating package lists...${NC}"
     $SUDO apt update
     echo -e "${GREEN}[+] Installing: $@${NC}"
@@ -31,6 +35,10 @@ case "$1" in
     ;;
   remove|rm)
     shift
+    if [[ $# -eq 0 ]]; then
+      echo -e "${GREEN}[!] No packages specified to remove.${NC}"
+      exit 1
+    fi
     echo -e "${GREEN}[-] Removing: $@${NC}"
     $SUDO apt remove "$@"
     echo -e "${GREEN}[✓] Clearing unused packages...${NC}"
@@ -38,17 +46,26 @@ case "$1" in
     ;;
   purge|p)
     shift
+    if [[ $# -eq 0 ]]; then
+      echo -e "${GREEN}[!] No packages specified to purge.${NC}"
+      exit 1
+    fi
     echo -e "${GREEN}[x] Purging: $@${NC}"
     $SUDO apt purge "$@"
     echo -e "${GREEN}[✓] Clearing unused packages...${NC}"
     $SUDO apt autoremove --purge -y
     ;;
+  help|h)
+    echo -e "${GREEN}Usage:${NC}"
+    echo "  zap install <pkg>   Install packages"
+    echo "  zap upgrade         Upgrade all packages"
+    echo "  zap remove <pkg>    Remove packages"
+    echo "  zap purge <pkg>     Purge packages"
+    echo "  zap help            Show this message"
+    ;;
   *)
-    echo "Usage:"
-    echo "  zap install <pkg>"
-    echo "  zap upgrade"
-    echo "  zap remove <pkg>"
-    echo "  zap purge <pkg>"
+    echo -e "${GREEN}[!] Unknown command.${NC}"
+    echo "Try 'zap help' for usage."
     exit 1
     ;;
 esac
