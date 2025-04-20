@@ -18,7 +18,7 @@
 
 2. Install `zap` with one simple command:
    ```
-   bash -c "$(curl -fsSL https://raw.githubusercontent.com/pptoobox/zap/refs/heads/main/install.sh)"
+   bash -c "$(curl -fsSL https://raw.githubusercontent.com/pptoobox/zap/main/install.sh)"
    ```
 
 This will:
