@@ -1,7 +1,7 @@
 #!/bin/bash
 
 # Variables
-ZAP_REPO="https://raw.githubusercontent.com/<your-username>/zap/main/zap"
+ZAP_REPO="https://raw.githubusercontent.com/pptoolbox/zap/main/zap"
 DEST="/usr/local/bin/zap"
 SYMLINK="/bin/zap"
 
