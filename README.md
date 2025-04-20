@@ -3,8 +3,8 @@
 `zap` is a lightweight and simple wrapper for `apt` that helps automate package management tasks on Debian-based systems. It runs `apt update` automatically before installation or upgrades and cleans up unused packages after actions like install, upgrade, remove, and purge.
 
 ## 🚀 Features
-- **Auto Update**: Always runs `apt update` before install or upgrade.
-- **Auto Cleanup**: Automatically runs `apt autoremove --purge` to clean up unused packages after every action.
+- **Auto Update**: Always updated package list before install or upgrade.
+- **Auto Cleanup**: Automatically cleans up unused packages afterwards.
 - **Simple Commands**: Easily manage packages with `zap install`, `zap upgrade`, `zap remove`, and `zap purge`.
 
 ## 🔥 Installation
@@ -16,7 +16,7 @@
    sudo apt update && sudo apt install curl -y
    ```
 
-2. Make the script executable:
+2. Install `zap` with one simple command:
    ```
    bash -c "$(curl -fsSL https://raw.githubusercontent.com/pptoobox/zap/refs/heads/main/install.sh)"
    ```
@@ -32,7 +32,7 @@ If you prefer to manually install `zap`, follow these steps:
 
 1. Clone the repository:
    ```
-   git clone https://github.com/<your-username>/zap.git
+   git clone https://github.com/pptoobox/zap.git
    cd zap
    ```
 
@@ -69,7 +69,7 @@ zap upgrade
 This will:
 - Update the package lists.
 - Upgrade all installed packages.
-- Automatically clean up unused packages (apt autoremove --purge).
+- Automatically clean up unused packages `(apt autoremove --purge)`.
 
 ### 3. Remove a Package
 ```
@@ -77,7 +77,7 @@ zap remove <package-name>
 ```
 This will:
 - Remove the specified package.
-- Automatically clean up unused packages (apt autoremove).
+- Automatically clean up unused packages `(apt autoremove)`.
 
 ### 4. Purge a Package (Remove Configuration Files)
 ```
@@ -85,7 +85,7 @@ zap purge <package-name>
 ```
 This will:
 - Purge the specified package along with its configuration files.
-- Automatically clean up unused packages (apt autoremove --purge).
+- Automatically clean up unused packages `(apt autoremove --purge)`.
 
 ### 🛠️ Contributing
 Feel free to open issues or create pull requests if you'd like to contribute to the project.
