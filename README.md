@@ -18,7 +18,7 @@
 
 2. Install `zap` with one simple command:
    ```
-   bash -c "$(curl -fsSL https://raw.githubusercontent.com/pptoobox/zap/main/install.sh)"
+   bash -c "$(curl -fsSL https://raw.githubusercontent.com/pptoolbox/zap/main/install.sh)"
    ```
 
 This will:
@@ -32,7 +32,7 @@ If you prefer to manually install `zap`, follow these steps:
 
 1. Clone the repository:
    ```
-   git clone https://github.com/pptoobox/zap.git
+   git clone https://github.com/pptoolbox/zap.git
    cd zap
    ```
 
