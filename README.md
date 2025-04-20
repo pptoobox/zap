@@ -52,40 +52,16 @@ If you prefer to manually install `zap`, follow these steps:
    ```
 
 ## 🚀 Usage
-Once installed, you can use the following commands to manage packages:
+Once installed, you can use various commands to install, remove and upgrade your packages with ease.
 
-### 1. Install a Package
+To know about all the cool commands, use
 ```
-zap install <package-name>
+zap help
 ```
-This will:
-- Update the package lists.
-- Install the package.
-
-### 2. Upgrade All Packages
+or
 ```
-zap upgrade
+zap h
 ```
-This will:
-- Update the package lists.
-- Upgrade all installed packages.
-- Automatically clean up unused packages `(apt autoremove --purge)`.
-
-### 3. Remove a Package
-```
-zap remove <package-name>
-```
-This will:
-- Remove the specified package.
-- Automatically clean up unused packages `(apt autoremove)`.
-
-### 4. Purge a Package (Remove Configuration Files)
-```
-zap purge <package-name>
-```
-This will:
-- Purge the specified package along with its configuration files.
-- Automatically clean up unused packages `(apt autoremove --purge)`.
-
+This will show you a complete list of command that you can utilize along with their usecases.
 ### 🛠️ Contributing
 Feel free to open issues or create pull requests if you'd like to contribute to the project.
