@@ -14,7 +14,7 @@ fi
 
 # Command dispatcher
 case "$1" in
-  list-all|la)
+  list|l)
     echo -e "${GREEN}[+] Updating package lists...${NC}"
     $SUDO apt update
     echo -e "${GREEN}[+] Listing all packages:${NC}"
@@ -46,10 +46,6 @@ case "$1" in
   update|u)
     echo -e "${GREEN}[+] Updating package lists...${NC}"
     $SUDO apt update
-    echo -e "${GREEN}[+] Upgrading packages...${NC}"
-    $SUDO apt full-upgrade
-    echo -e "${GREEN}[✓] Clearing unused packages...${NC}"
-    $SUDO apt autoremove --purge -y
     ;;
   install|i)
     shift
@@ -122,14 +118,14 @@ case "$1" in
     echo -e "${GREEN}Usage:${NC}"
     echo "  zap <command>"
     echo -e "${GREEN}Commands:${NC}"
-    echo "  list-all         , la          > List all packages"
+    echo "  list             , l           > List packages"
     echo "  list-installed   , li          > List installed packages"
     echo "  search <pkg>     , s <pkg>     > Search for any package"
     echo "  show-info <pkg>  , si <pkg>    > Show info about any packages"
     echo "  update           , u           > Update package lists"
     echo "  install <pkg>    , i <pkg>     > Install packages"
     echo "  reinstall <pkg>  , ri <pkg>    > Re-install packages"
-    echo "  full-upgrade     , fu          > Upgrade all packages"
+    echo "  full-upgrade     , fu          > Fully upgrade all packages"
     echo "  remove <pkg>     , rm <pkg>    > Remove packages"
     echo "  purge <pkg>      , p <pkg>     > Purge packages"
     echo "  self-update      , su          > Update/Reinstall zap"
