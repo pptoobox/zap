@@ -24,6 +24,12 @@ case "$1" in
     echo -e "${GREEN}[+] Listing installed packages:${NC}"
     $SUDO apt list -i
     ;;
+  list-upgradable|lu)
+    echo -e "${GREEN}[+] Updating package lists...${NC}"
+    $SUDO apt update
+    echo -e "${GREEN}[+] Listing upgradable packages:${NC}"
+    $SUDO apt list -u
+    ;;
   search|s)
     shift
     if [[ $# -eq 0 ]]; then
@@ -120,6 +126,7 @@ case "$1" in
     echo -e "${GREEN}Commands:${NC}"
     echo "  list             , l           > List packages"
     echo "  list-installed   , li          > List installed packages"
+    echo "  list-upgradable  , lu          > List upgradable packages"
     echo "  search <pkg>     , s <pkg>     > Search for any package"
     echo "  show-info <pkg>  , si <pkg>    > Show info about any packages"
     echo "  update           , u           > Update package lists"
