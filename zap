@@ -38,7 +38,7 @@ case "$1" in
     fi
     echo -e "${BC}[+] Updating package lists...${NC}"
     $SUDO apt update
-    echo -e "${BC}[+] Searching for: $(echo "$@" | grep -o '\S*')${NC}"
+    echo -e "${BC}[+] Searching for: $(echo "$@" | sed 's/ -[^ ]*//g')${NC}"
     $SUDO apt search "$@"
     ;;
   show-info|si)
@@ -69,7 +69,7 @@ case "$1" in
     fi
     echo -e "${BC}[+] Updating package lists...${NC}"
     $SUDO apt update
-    echo -e "${BC}[+] Installing: $(echo "$@" | grep -o '\S*')${NC}"
+    echo -e "${BC}[+] Installing: $(echo "$@" | sed 's/ -[^ ]*//g')${NC}"
     $SUDO apt install "$@"
     ;;
   reinstall|ri)
@@ -80,7 +80,7 @@ case "$1" in
     fi
     echo -e "${BC}[+] Updating package lists...${NC}"
     $SUDO apt update
-    echo -e "${BC}[+] Re-installing: $(echo "$@" | grep -o '\S*')${NC}"
+    echo -e "${BC}[+] Re-installing: $(echo "$@" | sed 's/ -[^ ]*//g')${NC}"
     $SUDO apt reinstall "$@"
     ;;
   remove|rm)
@@ -89,7 +89,7 @@ case "$1" in
       echo -e "${BC}[!] No packages specified to remove.${NC}"
       exit 1
     fi
-    echo -e "${BC}[-] Removing: $(echo "$@" | grep -o '\S*')${NC}"
+    echo -e "${BC}[-] Removing: $(echo "$@" | sed 's/ -[^ ]*//g')${NC}"
     $SUDO apt remove "$@"
     echo -e "${BC}[✓] Clearing unused packages...${NC}"
     $SUDO apt autoremove -y
@@ -100,7 +100,7 @@ case "$1" in
       echo -e "${BC}[!] No packages specified to purge.${NC}"
       exit 1
     fi
-    echo -e "${BC}[x] Purging: $(echo "$@" | grep -o '\S*')${NC}"
+    echo -e "${BC}[x] Purging: $(echo "$@" | sed 's/ -[^ ]*//g')${NC}"
     $SUDO apt purge "$@"
     echo -e "${BC}[✓] Clearing unused packages...${NC}"
     $SUDO apt autoremove --purge -y
