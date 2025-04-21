@@ -2,7 +2,7 @@
 
 # Color helpers
 BC='\033[1;32m'
-NC='\033[0m'
+NC='\033[0m' # No Color
 
 # Check if the user is root or using sudo
 if [[ $EUID -ne 0 ]]; then
@@ -12,22 +12,11 @@ else
   SUDO=""
 fi
 
-# Define repeating constants
-checkinput () {
-  if [[ $# -eq 0 ]]; then
-    echo -e "${BC}[!] No package specified.${NC}"
-    exit 1
-  fi
-}
-updaterepo () {
-  echo -e "${BC}[+] Updating package lists...${NC}"
-  $SUDO apt update
-}
-
 # Command dispatcher
 case "$1" in
   list|l)
-    updaterepo
+    echo -e "${BC}[+] Updating package lists...${NC}"
+    $SUDO apt update
     echo -e "${BC}[+] Listing all packages:${NC}"
     $SUDO apt list
     ;;
@@ -36,51 +25,81 @@ case "$1" in
     $SUDO apt list -i
     ;;
   list-upgradable|lu)
-    updaterepo
+    echo -e "${BC}[+] Updating package lists...${NC}"
+    $SUDO apt update
     echo -e "${BC}[+] Listing upgradable packages:${NC}"
     $SUDO apt list -u
     ;;
   search|s)
-    checkinput "$@"
-    updaterepo
+    shift
+    if [[ $# -eq 0 ]]; then
+      echo -e "${BC}[!] No package specified to search.${NC}"
+      exit 1
+    fi
+    echo -e "${BC}[+] Updating package lists...${NC}"
+    $SUDO apt update
     echo -e "${BC}[+] Searching for: $@${NC}"
     $SUDO apt search "$@"
     ;;
   show-info|si)
-    checkinput "$@"
+    shift
+    if [[ $# -eq 0 ]]; then
+      echo -e "${BC}[!] No package specified to show info.${NC}"
+      exit 1
+    fi
     $SUDO apt show "$@"
     ;;
   update|u)
-    updaterepo
+    echo -e "${BC}[+] Updating package lists...${NC}"
+    $SUDO apt update
     ;;
   install|i)
-    checkinput "$@"
-    updaterepo
+    shift
+    if [[ $# -eq 0 ]]; then
+      echo -e "${BC}[!] No packages specified to install.${NC}"
+      exit 1
+    fi
+    echo -e "${BC}[+] Updating package lists...${NC}"
+    $SUDO apt update
     echo -e "${BC}[+] Installing: $@${NC}"
     $SUDO apt install "$@"
     ;;
   reinstall|ri)
-    checkinput "$@"
-    updaterepo
+    shift
+    if [[ $# -eq 0 ]]; then
+      echo -e "${BC}[!] No packages specified to re-install.${NC}"
+      exit 1
+    fi
+    echo -e "${BC}[+] Updating package lists...${NC}"
+    $SUDO apt update
     echo -e "${BC}[+] Re-installing: $@${NC}"
     $SUDO apt reinstall "$@"
     ;;
   full-upgrade|fu)
-    updaterepo
+    echo -e "${BC}[+] Updating package lists...${NC}"
+    $SUDO apt update
     echo -e "${BC}[+] Upgrading packages...${NC}"
     $SUDO apt full-upgrade
     echo -e "${BC}[✓] Clearing unused packages...${NC}"
     $SUDO apt autoremove --purge -y
     ;;
   remove|rm)
-    checkinput "$@"
+    shift
+    if [[ $# -eq 0 ]]; then
+      echo -e "${BC}[!] No packages specified to remove.${NC}"
+      exit 1
+    fi
     echo -e "${BC}[-] Removing: $@${NC}"
     $SUDO apt remove "$@"
     echo -e "${BC}[✓] Clearing unused packages...${NC}"
     $SUDO apt autoremove -y
     ;;
   purge|p)
-    checkinput "$@"
+    shift
+    if [[ $# -eq 0 ]]; then
+      echo -e "${BC}[!] No packages specified to purge.${NC}"
+      exit 1
+    fi
     echo -e "${BC}[x] Purging: $@${NC}"
     $SUDO apt purge "$@"
     echo -e "${BC}[✓] Clearing unused packages...${NC}"
