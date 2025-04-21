@@ -14,7 +14,6 @@ fi
 
 # Define repeating constants
 checkinput () {
-  shift
   if [[ $# -eq 0 ]]; then
     echo -e "${BC}[!] No package specified.${NC}"
     exit 1
