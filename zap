@@ -38,7 +38,7 @@ case "$1" in
     fi
     echo -e "${BC}[+] Updating package lists...${NC}"
     $SUDO apt update
-    echo -e "${BC}[+] Searching for: $@${NC}"
+    echo -e "${BC}[+] Searching for: $(echo "$@" | grep -o '\S*')${NC}"
     $SUDO apt search "$@"
     ;;
   show-info|si)
@@ -53,6 +53,14 @@ case "$1" in
     echo -e "${BC}[+] Updating package lists...${NC}"
     $SUDO apt update
     ;;
+  full-upgrade|fu)
+    echo -e "${BC}[+] Updating package lists...${NC}"
+    $SUDO apt update
+    echo -e "${BC}[+] Upgrading packages...${NC}"
+    $SUDO apt full-upgrade
+    echo -e "${BC}[✓] Clearing unused packages...${NC}"
+    $SUDO apt autoremove --purge -y
+    ;;
   install|i)
     shift
     if [[ $# -eq 0 ]]; then
@@ -61,7 +69,7 @@ case "$1" in
     fi
     echo -e "${BC}[+] Updating package lists...${NC}"
     $SUDO apt update
-    echo -e "${BC}[+] Installing: $@${NC}"
+    echo -e "${BC}[+] Installing: $(echo "$@" | grep -o '\S*')${NC}"
     $SUDO apt install "$@"
     ;;
   reinstall|ri)
@@ -72,16 +80,8 @@ case "$1" in
     fi
     echo -e "${BC}[+] Updating package lists...${NC}"
     $SUDO apt update
-    echo -e "${BC}[+] Re-installing: $@${NC}"
+    echo -e "${BC}[+] Re-installing: $(echo "$@" | grep -o '\S*')${NC}"
     $SUDO apt reinstall "$@"
-    ;;
-  full-upgrade|fu)
-    echo -e "${BC}[+] Updating package lists...${NC}"
-    $SUDO apt update
-    echo -e "${BC}[+] Upgrading packages...${NC}"
-    $SUDO apt full-upgrade
-    echo -e "${BC}[✓] Clearing unused packages...${NC}"
-    $SUDO apt autoremove --purge -y
     ;;
   remove|rm)
     shift
@@ -89,7 +89,7 @@ case "$1" in
       echo -e "${BC}[!] No packages specified to remove.${NC}"
       exit 1
     fi
-    echo -e "${BC}[-] Removing: $@${NC}"
+    echo -e "${BC}[-] Removing: $(echo "$@" | grep -o '\S*')${NC}"
     $SUDO apt remove "$@"
     echo -e "${BC}[✓] Clearing unused packages...${NC}"
     $SUDO apt autoremove -y
@@ -100,7 +100,7 @@ case "$1" in
       echo -e "${BC}[!] No packages specified to purge.${NC}"
       exit 1
     fi
-    echo -e "${BC}[x] Purging: $@${NC}"
+    echo -e "${BC}[x] Purging: $(echo "$@" | grep -o '\S*')${NC}"
     $SUDO apt purge "$@"
     echo -e "${BC}[✓] Clearing unused packages...${NC}"
     $SUDO apt autoremove --purge -y
@@ -130,9 +130,9 @@ case "$1" in
     echo "  search <pkg>     , s <pkg>     > Search for any package"
     echo "  show-info <pkg>  , si <pkg>    > Show info about any packages"
     echo "  update           , u           > Update package lists"
+    echo "  full-upgrade     , fu          > Fully upgrade all packages"
     echo "  install <pkg>    , i <pkg>     > Install packages"
     echo "  reinstall <pkg>  , ri <pkg>    > Re-install packages"
-    echo "  full-upgrade     , fu          > Fully upgrade all packages"
     echo "  remove <pkg>     , rm <pkg>    > Remove packages"
     echo "  purge <pkg>      , p <pkg>     > Purge packages"
     echo "  self-update      , su          > Update/Reinstall zap"
