@@ -41,26 +41,26 @@ case "$1" in
     $SUDO apt list -u
     ;;
   search|s)
-    checkinput
+    checkinput "$@"
     updaterepo
     echo -e "${BC}[+] Searching for: $@${NC}"
     $SUDO apt search "$@"
     ;;
   show-info|si)
-    checkinput
+    checkinput "$@"
     $SUDO apt show "$@"
     ;;
   update|u)
     updaterepo
     ;;
   install|i)
-    checkinput
+    checkinput "$@"
     updaterepo
     echo -e "${BC}[+] Installing: $@${NC}"
     $SUDO apt install "$@"
     ;;
   reinstall|ri)
-    checkinput
+    checkinput "$@"
     updaterepo
     echo -e "${BC}[+] Re-installing: $@${NC}"
     $SUDO apt reinstall "$@"
@@ -73,14 +73,14 @@ case "$1" in
     $SUDO apt autoremove --purge -y
     ;;
   remove|rm)
-    checkinput
+    checkinput "$@"
     echo -e "${BC}[-] Removing: $@${NC}"
     $SUDO apt remove "$@"
     echo -e "${BC}[✓] Clearing unused packages...${NC}"
     $SUDO apt autoremove -y
     ;;
   purge|p)
-    checkinput
+    checkinput "$@"
     echo -e "${BC}[x] Purging: $@${NC}"
     $SUDO apt purge "$@"
     echo -e "${BC}[✓] Clearing unused packages...${NC}"
