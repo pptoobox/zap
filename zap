@@ -1,129 +1,111 @@
 #!/bin/bash
 
 # Color helpers
-GREEN='\033[1;32m'
-NC='\033[0m' # No Color
+BC='\033[1;32m'
+NC='\033[0m'
 
 # Check if the user is root or using sudo
 if [[ $EUID -ne 0 ]]; then
-  echo -e "${GREEN}[*] Using sudo for package operations...${NC}"
+  echo -e "${BC}[*] Using sudo for package operations...${NC}"
   SUDO="sudo"
 else
   SUDO=""
 fi
 
+# Define Variables
+checkinput () {
+  shift
+  if [[ $# -eq 0 ]]; then
+    echo -e "${BC}[!] No package specified.${NC}"
+    exit 1
+  fi
+}
+updaterepo () {
+  echo -e "${BC}[+] Updating package lists...${NC}"
+  $SUDO apt update
+}
+
 # Command dispatcher
 case "$1" in
   list|l)
-    echo -e "${GREEN}[+] Updating package lists...${NC}"
-    $SUDO apt update
-    echo -e "${GREEN}[+] Listing all packages:${NC}"
+    updaterepo
+    echo -e "${BC}[+] Listing all packages:${NC}"
     $SUDO apt list
     ;;
   list-installed|li)
-    echo -e "${GREEN}[+] Listing installed packages:${NC}"
+    echo -e "${BC}[+] Listing installed packages:${NC}"
     $SUDO apt list -i
     ;;
   list-upgradable|lu)
-    echo -e "${GREEN}[+] Updating package lists...${NC}"
-    $SUDO apt update
-    echo -e "${GREEN}[+] Listing upgradable packages:${NC}"
+    updaterepo
+    echo -e "${BC}[+] Listing upgradable packages:${NC}"
     $SUDO apt list -u
     ;;
   search|s)
-    shift
-    if [[ $# -eq 0 ]]; then
-      echo -e "${GREEN}[!] No package specified to search.${NC}"
-      exit 1
-    fi
-    echo -e "${GREEN}[+] Updating package lists...${NC}"
-    $SUDO apt update
-    echo -e "${GREEN}[+] Searching for: $@${NC}"
+    checkinput
+    updaterepo
+    echo -e "${BC}[+] Searching for: $@${NC}"
     $SUDO apt search "$@"
     ;;
   show-info|si)
-    shift
-    if [[ $# -eq 0 ]]; then
-      echo -e "${GREEN}[!] No package specified to show info.${NC}"
-      exit 1
-    fi
+    checkinput
     $SUDO apt show "$@"
     ;;
   update|u)
-    echo -e "${GREEN}[+] Updating package lists...${NC}"
-    $SUDO apt update
+    updaterepo
     ;;
   install|i)
-    shift
-    if [[ $# -eq 0 ]]; then
-      echo -e "${GREEN}[!] No packages specified to install.${NC}"
-      exit 1
-    fi
-    echo -e "${GREEN}[+] Updating package lists...${NC}"
-    $SUDO apt update
-    echo -e "${GREEN}[+] Installing: $@${NC}"
+    checkinput
+    updaterepo
+    echo -e "${BC}[+] Installing: $@${NC}"
     $SUDO apt install "$@"
     ;;
   reinstall|ri)
-    shift
-    if [[ $# -eq 0 ]]; then
-      echo -e "${GREEN}[!] No packages specified to re-install.${NC}"
-      exit 1
-    fi
-    echo -e "${GREEN}[+] Updating package lists...${NC}"
-    $SUDO apt update
-    echo -e "${GREEN}[+] Re-installing: $@${NC}"
+    checkinput
+    updaterepo
+    echo -e "${BC}[+] Re-installing: $@${NC}"
     $SUDO apt reinstall "$@"
     ;;
   full-upgrade|fu)
-    echo -e "${GREEN}[+] Updating package lists...${NC}"
-    $SUDO apt update
-    echo -e "${GREEN}[+] Upgrading packages...${NC}"
+    updaterepo
+    echo -e "${BC}[+] Upgrading packages...${NC}"
     $SUDO apt full-upgrade
-    echo -e "${GREEN}[✓] Clearing unused packages...${NC}"
+    echo -e "${BC}[✓] Clearing unused packages...${NC}"
     $SUDO apt autoremove --purge -y
     ;;
   remove|rm)
-    shift
-    if [[ $# -eq 0 ]]; then
-      echo -e "${GREEN}[!] No packages specified to remove.${NC}"
-      exit 1
-    fi
-    echo -e "${GREEN}[-] Removing: $@${NC}"
+    checkinput
+    echo -e "${BC}[-] Removing: $@${NC}"
     $SUDO apt remove "$@"
-    echo -e "${GREEN}[✓] Clearing unused packages...${NC}"
+    echo -e "${BC}[✓] Clearing unused packages...${NC}"
     $SUDO apt autoremove -y
     ;;
   purge|p)
-    shift
-    if [[ $# -eq 0 ]]; then
-      echo -e "${GREEN}[!] No packages specified to purge.${NC}"
-      exit 1
-    fi
-    echo -e "${GREEN}[x] Purging: $@${NC}"
+    checkinput
+    echo -e "${BC}[x] Purging: $@${NC}"
     $SUDO apt purge "$@"
-    echo -e "${GREEN}[✓] Clearing unused packages...${NC}"
+    echo -e "${BC}[✓] Clearing unused packages...${NC}"
     $SUDO apt autoremove --purge -y
     ;;
   self-update|su)
-    echo -e "${GREEN}[-] Removing old script...${NC}"
+    echo -e "${BC}[-] Removing old script...${NC}"
     $SUDO rm /usr/local/bin/zap
-    echo -e "${GREEN}[+] Downloading zap script from GitHub...${NC}"
+    echo -e "${BC}[+] Downloading zap script from GitHub...${NC}"
     $SUDO curl -s -o /usr/local/bin/zap https://raw.githubusercontent.com/pptoolbox/zap/main/zap
-    echo -e "${GREEN}[+] Making zap executable...${NC}"
+    echo -e "${BC}[+] Making zap executable...${NC}"
     $SUDO chmod +x /usr/local/bin/zap
-    echo -e "${GREEN}\n[✓] Update complete.${NC}"
+    echo -e "${BC}\n[✓] Update complete.${NC}"
     ;;
   self-destruct|sd)
-    echo -e "${GREEN}[-] Completely removing zap from your system...${NC}"
+    echo -e "${BC}[-] Completely removing zap from your system...${NC}"
     $SUDO rm /bin/zap
     $SUDO rm /usr/local/bin/zap
-    echo -e "${GREEN}\n[✓] Good bye.${NC}"
+    echo -e "${BC}\n[✓] Good bye.${NC}"
     ;;
   help|h)
-    echo -e "${GREEN}Usage:${NC}"
+    echo -e "${BC}Usage:${NC}"
     echo "  zap <command>"
-    echo -e "${GREEN}Commands:${NC}"
+    echo -e "${BC}Commands:${NC}"
     echo "  list             , l           > List packages"
     echo "  list-installed   , li          > List installed packages"
     echo "  list-upgradable  , lu          > List upgradable packages"
@@ -139,7 +121,7 @@ case "$1" in
     echo "  self-destruct    , sd          > Completely remove zap"
     ;;
   *)
-    echo -e "${GREEN}[!] Unknown command.${NC}"
+    echo -e "${BC}[!] Unknown command.${NC}"
     echo "Try 'zap help or zap h' for usage."
     exit 1
     ;;
