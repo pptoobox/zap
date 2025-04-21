@@ -12,7 +12,7 @@ else
   SUDO=""
 fi
 
-# Define Variables
+# Define repeating constants
 checkinput () {
   shift
   if [[ $# -eq 0 ]]; then
