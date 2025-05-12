@@ -49,8 +49,8 @@ case "$1" in
     fi
     $SUDO apt show "$@"
     ;;
-  update|u)
-    echo -e "${BC}[+] Updating package lists...${NC}"
+  check-update|cu)
+    echo -e "${BC}[+] Checking for updates...${NC}"
     $SUDO apt update
     ;;
   full-upgrade|fu)
@@ -129,7 +129,7 @@ case "$1" in
     echo "  list-upgradable  , lu          > List upgradable packages"
     echo "  search <pkg>     , s <pkg>     > Search for any package"
     echo "  show-info <pkg>  , si <pkg>    > Show info about any packages"
-    echo "  update           , u           > Update package lists"
+    echo "  check-update     , cu          > Update package lists"
     echo "  full-upgrade     , fu          > Fully upgrade all packages"
     echo "  install <pkg>    , i <pkg>     > Install packages"
     echo "  reinstall <pkg>  , ri <pkg>    > Re-install packages"
